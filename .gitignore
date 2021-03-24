@@ -131,3 +131,5 @@ dmypy.json
 # Auto marker
 *.ok
 ok
+
+*.DS_Store
