@@ -128,8 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Auto marker
-*.ok
-ok
-
 *.DS_Store
