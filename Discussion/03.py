@@ -38,5 +38,27 @@ def multiply(m, n):
     def helper(x, y, result):
         if y == 0:
             return result
-        return helper(x, y - 1, result + y)
+        return helper(x, y - 1, result + x)
     return helper(m, n, 0)
+
+def hailstone(n):
+    """
+    >>> a = hailstone(10)
+    10
+    5
+    16
+    8
+    4
+    2
+    1
+    >>> a
+    7
+    """
+    print(n)
+    if n != 1:
+        if n % 2 == 0:
+            return 1 + hailstone(n // 2)
+        else:
+            return 1 + hailstone(n * 3 + 1)
+    else:
+        return 1
