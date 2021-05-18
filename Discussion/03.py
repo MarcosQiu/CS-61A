@@ -62,3 +62,34 @@ def hailstone(n):
             return 1 + hailstone(n * 3 + 1)
     else:
         return 1
+
+def count_stairs_ways(n):
+    """
+    >>> count_stairs_ways(4)
+    5
+    """
+    if n == 1:
+        return 1
+    if n == 2:
+        return 2
+    return count_stairs_ways(n - 1) + count_stairs_ways(n - 2)
+
+def count_k(n, k):
+    """
+    >>> count_k(3, 3)
+    4
+    >>> count_k(4, 4)
+    8
+    >>> count_k(10, 3)
+    274
+    >>> count_k(300, 1)
+    1
+    """
+    res = 0
+    for i in range(1, k + 1):
+        if n - i == 0:
+            res += 1
+        if n - i > 0:
+            res += count_k(n - i, k)
+    
+    return res
