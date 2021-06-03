@@ -12,6 +12,7 @@ def couple(s, t):
     """
     assert len(s) == len(t)
     "*** YOUR CODE HERE ***"
+    return [[s[i], t[i]] for i in range(len(s))]
 
 
 from math import sqrt
@@ -28,7 +29,7 @@ def distance(city_a, city_b):
     >>> distance(city_c, city_d)
     5.0
     """
-    "*** YOUR CODE HERE ***"
+    return sqrt(pow(get_lat(city_a) - get_lat(city_b), 2) + pow(get_lon(city_a) - get_lon(city_b), 2))
 
 
 def closer_city(lat, lon, city_a, city_b):
@@ -46,7 +47,9 @@ def closer_city(lat, lon, city_a, city_b):
     >>> closer_city(41.29, 174.78, bucharest, vienna)
     'Bucharest'
     """
-    "*** YOUR CODE HERE ***"
+    dist_a = sqrt(pow(get_lat(city_a) - lat, 2) + pow(get_lon(city_a) - lon, 2))
+    dist_b = sqrt(pow(get_lat(city_b) - lat, 2) + pow(get_lon(city_b) - lon, 2))
+    return get_name(city_a) if dist_a <= dist_b else get_name(city_b)
 
 
 def check_city_abstraction():
@@ -151,7 +154,13 @@ def berry_finder(t):
     >>> berry_finder(t)
     True
     """
-    "*** YOUR CODE HERE ***"
+    if label(t) == "berry":
+        return True
+    if not is_leaf(t):
+        for child in branches(t):
+            if berry_finder(child):
+                return True
+    return False
 
 
 def sprout_leaves(t, leaves):
@@ -187,7 +196,11 @@ def sprout_leaves(t, leaves):
           1
           2
     """
-    "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return tree(label(t), branches=[tree(leaf) for leaf in leaves])
+
+    new_branches = [sprout_leaves(child, leaves) for child in branches(t)]
+    return tree(label(t), branches=new_branches)
 
 # Abstraction tests for sprout_leaves and berry_finder
 
@@ -248,7 +261,7 @@ def coords(fn, seq, lower, upper):
     [[-2, 4], [1, 1], [3, 9]]
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return [[x, fn(x)] for x in seq if fn(x) >= lower and fn(x) <= upper]
 
 
 def riffle(deck):
@@ -261,7 +274,7 @@ def riffle(deck):
     [0, 10, 1, 11, 2, 12, 3, 13, 4, 14, 5, 15, 6, 16, 7, 17, 8, 18, 9, 19]
     """
     "*** YOUR CODE HERE ***"
-    return _______
+    return [item for sublist in [[deck[x], deck[x + len(deck) // 2]] for x in range(len(deck) // 2)] for item in sublist]
 
 
 def add_trees(t1, t2):
@@ -299,7 +312,18 @@ def add_trees(t1, t2):
         5
       5
     """
-    "*** YOUR CODE HERE ***"
+    if not is_tree(t1):
+        return t2
+    if not is_tree(t2):
+        return t1
+
+    branches1 = branches(t1)
+    branches2 = branches(t2)
+    branches1.extend([None] * (max(len(branches1), len(branches2)) - len(branches1)))
+    branches2.extend([None] * (max(len(branches1), len(branches2)) - len(branches2)))
+
+    new_branches = [add_trees(branches1[i], branches2[i]) for i in range(max(len(branches1), len(branches2)))]
+    return tree(label(t1) + label(t2), new_branches)
 
 
 def build_successors_table(tokens):
