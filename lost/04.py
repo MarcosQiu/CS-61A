@@ -1,5 +1,6 @@
 from utils import tree, label, branch, is_leave
 
+
 def primary_stress(t):
     """
     Returns a STRING corresponding to the stressed part of the word represented by the input tree.
@@ -17,6 +18,7 @@ def primary_stress(t):
             num_s += 1
         return max([helper(b, num_s) for b in branch(t)], key=lambda x:x[1])
     return helper(t, 0)[0]
+
 
 def siblings(t):
     """Return a list of the labels of all nodes that have siblings in t.

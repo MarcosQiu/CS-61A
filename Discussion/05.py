@@ -1,3 +1,6 @@
+from utils import tree, is_leave, branch, label
+
+
 def closest_number(nums, target):
     """
     >>> closest_number([1, 4, 5, 6, 7], 2)
@@ -8,6 +11,7 @@ def closest_number(nums, target):
     23
     """
     return min(nums, key=lambda num: abs(num - target))
+
 
 def max_product(s):
     """Return the maximum product that can be formed using non-consecutive
@@ -25,6 +29,7 @@ def max_product(s):
         s[0] * max_product(s[2:])
     )
 
+
 def add_this_many(x, el, s):
     """ Adds el to the end of s the number of times x occurs
     in s.
@@ -41,7 +46,6 @@ def add_this_many(x, el, s):
         if s[idx] == x:
             s.append(el)
 
-from utils import tree, is_leave, branch, label
 
 def height(t):
     """ Return the height of a tree.
@@ -53,6 +57,7 @@ def height(t):
     if is_leave(t):
         return 0
     return max([height(c) for c in branch(t)] + [-1]) + 1
+
 
 def max_path_sum(t):
     """Return the maximum path sum of the tree.
@@ -66,6 +71,7 @@ def max_path_sum(t):
     return label(t) + max([
         max_path_sum(b) for b in branch(t)
     ])
+
 
 def find_path(tree, x):
     """

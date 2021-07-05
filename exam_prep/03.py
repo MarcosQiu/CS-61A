@@ -17,6 +17,7 @@ def is_palindrome(s):
         return True
     return s[0] == s[-1] and is_palindrome(s[1:-1])
 
+
 def greatest_pal(s):
     """
     >>> greatest_pal("tenet")
@@ -38,6 +39,7 @@ def greatest_pal(s):
     if len(left) > len(right):
         return left
     return right
+
 
 def greatest_pal_2(s):
     """
@@ -64,6 +66,7 @@ def greatest_pal_2(s):
         return helper(a, b + 1, c)
     return helper(1, 0, "")
 
+
 def greatest_pal_3(s):
     """
     >>> greatest_pal_3("tenet")
@@ -86,6 +89,7 @@ def greatest_pal_3(s):
             return s[b:b + a]
         return helper(a, b + 1)
     return helper(len(s), 0)
+
 
 def greatest_pal_4(s):
     """
