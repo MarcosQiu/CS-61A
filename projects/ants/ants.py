@@ -25,7 +25,8 @@ class Place:
         self.entrance = None  # A Place
         # Phase 1: Add an entrance to the exit
         # BEGIN Problem 2
-        "*** YOUR CODE HERE ***"
+        if self.exit is not None:
+            self.exit.entrance = self
         # END Problem 2
 
     def is_hive(self):
@@ -155,6 +156,7 @@ class HarvesterAnt(Ant):
     name = 'Harvester'
     implemented = True
     # OVERRIDE CLASS ATTRIBUTES HERE
+    food_cost = 2
 
     def action(self, gamestate):
         """Produce 1 additional food for the colony.
@@ -162,7 +164,7 @@ class HarvesterAnt(Ant):
         gamestate -- The GameState, used to access game state information.
         """
         # BEGIN Problem 1
-        "*** YOUR CODE HERE ***"
+        gamestate.food += 1
         # END Problem 1
 
 
@@ -173,6 +175,9 @@ class ThrowerAnt(Ant):
     implemented = True
     damage = 1
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
+    food_cost = 3
+    min_range = 0
+    max_range = float('inf')
 
     def nearest_bee(self, beehive):
         """Return the nearest Bee in a Place that is not the HIVE (beehive), connected to
@@ -181,7 +186,26 @@ class ThrowerAnt(Ant):
         This method returns None if there is no such Bee (or none in range).
         """
         # BEGIN Problem 3 and 4
-        return bee_selector(self.place.bees)  # REPLACE THIS LINE
+        current_place = self.place
+        distance = 0
+        while True:
+            if distance < self.min_range:
+                if current_place is not None and not current_place.is_hive():
+                    distance += 1
+                    current_place = current_place.entrance
+                else:
+                    return None
+            elif distance > self.max_range:
+                return None
+            elif (
+                    current_place is not None and
+                    not current_place.is_hive() and
+                    len(current_place.bees) == 0
+            ):
+                distance += 1
+                current_place = current_place.entrance
+            else:
+                return bee_selector(current_place.bees) if (current_place and not current_place.is_hive()) else None
         # END Problem 3 and 4
 
     def throw_at(self, target):
@@ -212,7 +236,8 @@ class ShortThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True
+    max_range = 3
     # END Problem 4
 
 
@@ -223,7 +248,8 @@ class LongThrower(ThrowerAnt):
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True
+    min_range = 5
     # END Problem 4
 
 
@@ -235,7 +261,7 @@ class FireAnt(Ant):
     food_cost = 5
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 5
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 5
 
     def __init__(self, health=3):
@@ -250,7 +276,10 @@ class FireAnt(Ant):
         the additional damage if the fire ant dies.
         """
         # BEGIN Problem 5
-        "*** YOUR CODE HERE ***"
+        damage_dealt = amount + (self.damage if self.health <= amount else 0)
+        for bee in self.place.bees[:]:
+            bee.reduce_health(damage_dealt)
+        super().reduce_health(amount)
         # END Problem 5
 
 # BEGIN Problem 6
