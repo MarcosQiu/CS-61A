@@ -282,12 +282,38 @@ class FireAnt(Ant):
         super().reduce_health(amount)
         # END Problem 5
 
+
 # BEGIN Problem 6
-# The WallAnt class
+class WallAnt(Ant):
+    name = 'Wall'
+    food_cost = 4
+    implemented = True
+
+    def __init__(self, health=4):
+        super().__init__(health)
 # END Problem 6
 
 # BEGIN Problem 7
-# The HungryAnt Class
+class HungryAnt(Ant):
+    name = 'Hunger'
+    food_cost = 4
+    implemented = True
+    chew_duration = 3
+
+    def __init__(self, health=1):
+        self.chewing = 0
+        super().__init__(health)
+
+    def action(self, gamestate):
+        if self.chewing == 0 and len(self.place.bees) > 0:
+            bee = bee_selector(self.place.bees)
+            bee.reduce_health(bee.health)
+            self.chewing = self.chew_duration
+        elif self.chewing > 0:
+            self.chewing -= 1
+
+
+
 # END Problem 7
 
 
